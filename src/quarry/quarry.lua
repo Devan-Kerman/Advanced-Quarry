@@ -1,36 +1,54 @@
+os.loadAPI("quarry/config/ores.lua")
+os.loadAPI("quarry/movement.lua")
 
-
-ores = {
-    ["minecraft:coal_ore"] = {}, 
-    ["minecraft:iron_ore"] = {},
-    ["minecraft:diamond_ore"] = {},
-    ["minecraft:gold_ore"] = {},
-    ["minecraft:lapis_ore"] = {},
-    ["minecraft:redstone_ore"] = {},
-    ["minecraft:emerald_ore"] = {},
-    ["thermalfoundation:ore"] = {},
-    -- arrays start from 0 my ass
-    ["techreborn:ore"] = {
-        [0] = true, -- galena ore, useless fucking shit
-    }
-}
-
-function isOre(success, data, error)
-    if success then
-        local table = ores[data.name]
-        return table and not table[data.metadata]
-    end
-    print(error)
+table = {}
+function start()
+    recurseVein(table, 0, 0, 0, movement.tryForward, movement.tryBackward, ores.inspectOre)
 end
 
+function clear()
+    table = {}
+end
 
+function recurseVein(coordinateTable, forward, side, altitude, moveFunction, reverseFunction, predicate)
+    -- if we have not visited this coordinate yet, and there is ore
+    print(forward, side, altitude, not access(coordinateTable, forward, side, altitude), predicate())
+    if not access(coordinateTable, forward, side, altitude) and predicate() then
+        -- visit coordinate and mine into the ore
+        coordinateTable[forward][side][altitude] = true
+        moveFunction()
 
-distance = 0
-function advance()
-    -- if we have enough fuel to head back
-    if budget(distance) then
-        turtle.dig()
-        turtle.forward()
+        -- try going forward in the vein
+        recurseVein(coordinateTable, forward+1, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        -- then up
+        recurseVein(coordinateTable, forward, side, altitude+1, movement.tryUp, movement.tryDown, ores.inspectOreUp)
+        -- then down
+        recurseVein(coordinateTable, forward, side, altitude-1, movement.tryDown, movement.tryUp, ores.inspectOreDown)
+
+        -- then right
+        turtle.turnRight()
+        recurseVein(coordinateTable, forward, side+1, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        -- then back
+        turtle.turnRight()
+        recurseVein(coordinateTable, forward-1, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        -- then left
+        turtle.turnRight()
+        recurseVein(coordinateTable, forward, side-1, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        -- move backwards
+        turtle.turnRight()
+
+        reverseFunction()
     end
 end
-    
+
+function access(coordinateTable, x, z, y)
+    if not coordinateTable[x] then
+        coordinateTable[x] = {}
+    end
+
+    if not coordinateTable[x][z] then
+        coordinateTable[x][z] = {}
+    end
+
+    return coordinateTable[x][z][y]
+end
