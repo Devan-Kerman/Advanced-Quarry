@@ -1,48 +1,72 @@
-function tryForward()
-    print("try forward!")
+os.loadAPI("quarry/inventory.lua")
+
+distance = 0
+
+function tryForward(force)
+    -- if we have traveled farther than we can before running out of fuel
+    -- then stop
+    if not force and not inventory.hasFuel(distance + 1) then
+        return false
+    end
+
     if not turtle.forward() then
         if turtle.dig() or turtle.attack() then
-            print("try again!")
-            return tryForward()
+            return tryForward(force)
         end
         return false
     end
+    distance = distance + 1
     return true
 end
 
-function tryBackward()
+function tryBackward(force)
+    if not force and not inventory.hasFuel(distance + 1) then
+        return false
+    end
+
     if not turtle.back() then
         turtle.turnLeft()
         turtle.turnLeft()
         local result = false
         if turtle.dig() or turtle.attack() then
-            result = tryForward()
+            result = tryForward(force)
             return 
         end
         turtle.turnRight()
         turtle.turnRight()
         return result
     end
+    distance = distance + 1
     return true
 end
 
-function tryUp()
+function tryUp(force)
+    if not force and not inventory.hasFuel(distance + 1) then
+        return false
+    end
+
     if not turtle.up() then
         if turtle.digUp() or turtle.attackUp() then
-            return tryUp()
+            return tryUp(force)
         end
         return false
     end
+    distance = distance + 1
     return true
 end
 
-function tryDown()
+function tryDown(force)
+    if not force and not inventory.hasFuel(distance + 1) then
+        return false
+    end
+
     if not turtle.down() then
         if turtle.digDown() or turtle.attackDown() then
-            return tryDown()
+            return tryDown(force)
         end
         return false
     end
+    distance = distance + 1
     return true
 end
 

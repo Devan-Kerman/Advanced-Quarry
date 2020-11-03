@@ -11,3 +11,7 @@ function refuel()
     turtle.select(1)
     return turtle.getFuelLevel()
 end
+
+function hasFuel(fuel)
+    return turtle.getFuelLevel() > fuel or refuel() > fuel
+end
