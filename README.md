@@ -10,4 +10,4 @@ command                            | description
 `quarry/quarry.lua 5`              | digs out a 5x5 area
 `quarry/quarry.lua 5 6`            | digs out a 5x6 area
 
-place a chest behind the turtle, and the turtle will mine out the specified area **front to back, left to right**
+place a chest behind the turtle, some starter fuel inside the turtle, and the turtle will mine out the specified area **front to back, left to right**
