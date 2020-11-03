@@ -1,92 +1,130 @@
 os.loadAPI("quarry/inventory.lua")
 
-distance = 0
-
-function tryForward(force)
-    -- if we have traveled farther than we can before running out of fuel
-    -- then stop
-    if not force and not inventory.hasFuel(distance + 1) then
-        print("out of fuel!")
-        return false
-    end
-
-    if not turtle.forward() then
-        if turtle.dig() or turtle.attack() then
-            return tryForward(force)
-        end
-        return false
-    end
-    distance = distance + 1
-    return true
+local x, y, z, r = 0, 0, 0, 0
+function loc() 
+    return x, y, z
 end
 
-function tryBackward(force)
-    if not force and not inventory.hasFuel(distance + 1) then
-        print("out of fuel!")
-        return false
-    end
-
-    if not turtle.back() then
-        turtle.turnLeft()
-        turtle.turnLeft()
-        local result = false
-        if turtle.dig() or turtle.attack() then
-            result = tryForward(force)
-            return 
-        end
-        turtle.turnRight()
-        turtle.turnRight()
-        return result
-    end
-    distance = distance + 1
-    return true
-end
-
-function tryUp(force)
-    if not force and not inventory.hasFuel(distance + 1) then
-        print("out of fuel!")
-        return false
-    end
-
+function tryUp()
+    -- if no restriction
     if not turtle.up() then
-        if turtle.digUp() or turtle.attackUp() then
-            return tryUp(force)
+        -- break block
+        turtle.digUp()
+        -- try move up again
+        if not turtle.up() then
+            -- try killing whatever is above
+            while turtle.attackUp() do end
+            -- try one last time
+            if not turtle.up() then
+                return false
+            end
         end
-        return false
     end
-    distance = distance + 1
+    y = y + 1
     return true
 end
 
-function tryDown(force)
-    if not force and not inventory.hasFuel(distance + 1) then
-        return false
-    end
-
+function tryDown()
     if not turtle.down() then
-        if turtle.digDown() or turtle.attackDown() then
-            return tryDown(force)
+        turtle.digDown()
+        if not turtle.down() then
+            while turtle.attackDown() do end
+            if not turtle.down() then
+                return false
+            end
         end
-        return false
     end
-    distance = distance + 1
+    y = y - 1
     return true
 end
 
--- 0 = forward
--- 1 = right
--- 2 = back
--- 3 = left
-function incrementForRotation(rotation, forward, side, altitude)
-    rotation = rotation % 4
-    if rotation == 0 then
-        return forward+1, side, altitude
-    elseif rotation == 1 then
-        return forward, side+1, altitude
-    elseif rotation == 2 then
-        return forward-1, side, altitude
-    elseif rotation == 3 then
-        return forward, side-1, altitude
+function try()
+    if not turtle.forward() then
+        turtle.dig()
+        if not turtle.forward() then
+            while turtle.attack() do end
+            if not turtle.forward() then
+                return false
+            end
+        end
     end
-    print("not found")
+
+    if r == 0 then
+        x = x + 1
+    elseif r == 1 then
+        z = z + 1
+    elseif r == 2 then
+        x = x - 1
+    elseif r == 3 then
+        z = z - 1
+    end
+    return true
+end
+
+-- all relative to starting position
+-- 0 = 'north'
+-- 1 = 'east'
+-- 2 = 'south'
+-- 3 = 'west'
+function face(dir)
+    local delta = dir - r
+    if delta > 0 then
+        for i=1, delta do
+            turtle.turnRight()
+        end
+    elseif delta < 0 then
+        for i=1, math.abs(delta) do
+            turtle.turnLeft()
+        end
+    end
+    r = dir
+end
+
+-- checks if the turtle has enough fuel to return to a location
+function hasFuel(fx, fy, fz)
+    return inventory.hasFuel(math.abs(x - fx) + math.abs(y - fy) + math.abs(z - fz) + 1)
+end
+
+function navigate(fx, fy, fz)
+    -- if below destination
+    while fy > y do
+        tryUp()
+    end
+
+    -- if above destination
+    while fy < y do
+        tryDown()
+    end
+
+    -- if behind destination
+    if fx < x then
+        face(2)
+        while fx < x do
+            try()
+        end
+    end
+
+    -- if ahead of destination
+    if fx > x then
+        face(0)
+        while fx > x do
+            try()
+        end
+    end
+
+     -- if right of destination
+     if fz < z then
+        face(3)
+        while fz < z do
+            try()
+        end
+    end
+
+    -- if left of destination
+    if fz > z then
+        face(1)
+        while fz > z do
+            try()
+        end
+    end
 end

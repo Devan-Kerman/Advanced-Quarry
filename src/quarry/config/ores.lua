@@ -24,14 +24,12 @@ function isOre(success, data, error)
     return false
 end
 
+function breakOre()
+    if inspectOre() then
+        turtle.dig()
+    end
+end
+
 function inspectOre()
     return isOre(turtle.inspect())
-end
-
-function inspectOreUp()
-    return isOre(turtle.inspectUp())
-end
-
-function inspectOreDown()
-    return isOre(turtle.inspectDown())
 end

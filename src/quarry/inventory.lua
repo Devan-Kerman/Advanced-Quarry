@@ -23,3 +23,10 @@ function isFull()
     end
     return true
 end
+
+function dump()
+    for i=1, 16 do
+        turtle.select(i)
+        turtle.drop()
+    end
+end
