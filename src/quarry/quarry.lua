@@ -1,3 +1,4 @@
+local maxBlocks = ...
 os.loadAPI("quarry/config/ores.lua")
 os.loadAPI("quarry/movement.lua")
 os.loadAPI("quarry/inventory.lua")
@@ -81,3 +82,5 @@ function access(coordinateTable, x, z, y)
 
     return coordinateTable[x][z][y]
 end
+
+start(tonumber(maxBlocks))
