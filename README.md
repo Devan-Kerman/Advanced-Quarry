@@ -2,7 +2,7 @@
 A computercraft quarry
 
 # How to use
-first run the [installer](https://github.com/Devan-Kerman/cc-installer/) with the following command `pastebin run NfiWU0hg Devan-Kerman Advanced-Quarry`\
+first run the [installer](https://github.com/Devan-Kerman/cc-installer/) with the following command `pastebin run NfiWU0hg Devan-Kerman Advanced-Quarry main`\
 then, to run the program:
 command                            | description
 -----------------------------------|------------
