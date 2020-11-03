@@ -45,3 +45,21 @@ function tryDown()
     end
     return true
 end
+
+-- 0 = forward
+-- 1 = right
+-- 2 = back
+-- 3 = left
+function incrementForRotation(rotation, forward, side, altitude)
+    rotation = rotation % 4
+    if rotation == 0 then
+        return forward+1, side, altitude
+    elseif rotation == 1 then
+        return forward, side+1, altitude
+    elseif rotation == 2 then
+        return forward-1, side, altitude
+    elseif rotation == 3 then
+        return forward, side-1, altitude
+    end
+    print("not found")
+end

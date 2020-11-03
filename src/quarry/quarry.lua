@@ -3,37 +3,38 @@ os.loadAPI("quarry/movement.lua")
 
 table = {}
 function start()
-    recurseVein(table, 0, 0, 0, movement.tryForward, movement.tryBackward, ores.inspectOre)
+    recurseVein(table, 0, 0, 0, movement.tryForward, movement.tryBackward, ores.inspectOre, 0)
 end
 
 function clear()
     table = {}
 end
 
-function recurseVein(coordinateTable, forward, side, altitude, moveFunction, reverseFunction, predicate)
+-- todo use absolute coordinates instead of relative coordinates
+function recurseVein(coordinateTable, forward, side, altitude, moveFunction, reverseFunction, predicate, rotation)
+    forward, side, altitude = movement.incrementForRotation(rotation, forward, side, altitude)
     -- if we have not visited this coordinate yet, and there is ore
-    print(forward, side, altitude, not access(coordinateTable, forward, side, altitude), predicate())
     if not access(coordinateTable, forward, side, altitude) and predicate() then
         -- visit coordinate and mine into the ore
         coordinateTable[forward][side][altitude] = true
         moveFunction()
 
         -- try going forward in the vein
-        recurseVein(coordinateTable, forward+1, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre, rotation)
         -- then up
-        recurseVein(coordinateTable, forward, side, altitude+1, movement.tryUp, movement.tryDown, ores.inspectOreUp)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryUp, movement.tryDown, ores.inspectOreUp, rotation)
         -- then down
-        recurseVein(coordinateTable, forward, side, altitude-1, movement.tryDown, movement.tryUp, ores.inspectOreDown)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryDown, movement.tryUp, ores.inspectOreDown, rotation)
 
         -- then right
         turtle.turnRight()
-        recurseVein(coordinateTable, forward, side+1, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre, rotation+1)
         -- then back
         turtle.turnRight()
-        recurseVein(coordinateTable, forward-1, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre, rotation+2)
         -- then left
         turtle.turnRight()
-        recurseVein(coordinateTable, forward, side-1, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre)
+        recurseVein(coordinateTable, forward, side, altitude, movement.tryForward, movement.tryBackward, ores.inspectOre, rotation+3)
         -- move backwards
         turtle.turnRight()
 
