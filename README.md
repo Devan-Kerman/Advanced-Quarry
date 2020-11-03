@@ -3,8 +3,7 @@ A computercraft quarry
 
 # How to use
 first run the [installer](https://github.com/Devan-Kerman/cc-installer/) with the following command `pastebin run NfiWU0hg Devan-Kerman Advanced-Quarry`\
-then, to run the program\
-
+then, to run the program:
 command                            | description
 -----------------------------------|------------
 `quarry/quarry.lua`                | digs out a 16x16 area
