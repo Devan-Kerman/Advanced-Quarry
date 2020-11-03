@@ -16,10 +16,9 @@ function drill(blocks)
     -- keep going!
     local table = {}
     local i = 0
-    while movement.tryDown() do
+    while movement.tryDown(false) do
         i = i + 1
         recurseVein(table, 0, 0, 0, alwaysTrue, alwaysTrue, alwaysTrue, 0, true)
-
         -- return home
         if inventory.isFull() or i > blocks then
             break
