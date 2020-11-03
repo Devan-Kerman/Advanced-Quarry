@@ -6,6 +6,7 @@ function tryForward(force)
     -- if we have traveled farther than we can before running out of fuel
     -- then stop
     if not force and not inventory.hasFuel(distance + 1) then
+        print("out of fuel!")
         return false
     end
 
@@ -21,6 +22,7 @@ end
 
 function tryBackward(force)
     if not force and not inventory.hasFuel(distance + 1) then
+        print("out of fuel!")
         return false
     end
 
@@ -42,6 +44,7 @@ end
 
 function tryUp(force)
     if not force and not inventory.hasFuel(distance + 1) then
+        print("out of fuel!")
         return false
     end
 

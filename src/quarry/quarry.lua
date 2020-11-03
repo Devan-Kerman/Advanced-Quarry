@@ -1,22 +1,32 @@
 os.loadAPI("quarry/config/ores.lua")
 os.loadAPI("quarry/movement.lua")
+os.loadAPI("quarry/inventory.lua")
 
 function alwaysTrue()
     return true
 end
 
-function start()
+function start(blocks)
+    if blocks == nil then
+        blocks = 100
+    end
+    print(string.format("Mining %s blocks!", blocks))
+
     -- keep going!
     local table = {}
     local i = 0
     while movement.tryForward() do
         i = i + 1
         recurseVein(table, 0, 0, 0, alwaysTrue, alwaysTrue, alwaysTrue, 0, true)
+
+        -- return home
+        if inventory.isFull() or i > blocks then
+            break
+        end
     end
 
     turtle.turnRight()
     turtle.turnRight()
-    print(i)
     for c = 1, i do
         movement.tryForward(true)
     end
