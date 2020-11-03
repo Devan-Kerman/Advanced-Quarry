@@ -7,7 +7,7 @@ function dive()
     local skip = true
     -- ensure we have enough fuel to return to the home chest
     while movement.hasFuel(0, 0, 0) do
-        if skip then skip = true else
+        if skip then skip = false else
             for i=1, 4 do
                 turtle.turnRight()
                 ores.breakOre()
@@ -80,4 +80,13 @@ function quarry(width, length)
     return true
 end
 
-quarry(16, 16)
+width, length = ...
+if not width then
+    width = 16
+end
+
+if not length then
+    length = width
+end
+
+quarry(tonumber(width), tonumber(length))
