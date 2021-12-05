@@ -1,27 +1,18 @@
-ores = {
-    ["minecraft:coal_ore"] = {}, 
-    ["minecraft:iron_ore"] = {},
-    ["minecraft:diamond_ore"] = {},
-    ["minecraft:gold_ore"] = {},
-    ["minecraft:lapis_ore"] = {},
-    ["minecraft:redstone_ore"] = {},
-    ["minecraft:emerald_ore"] = {},
-    ["thermalfoundation:ore"] = {},
-    -- arrays start from 0 my ass
-    ["techreborn:ore"] = {
-        [0] = true, -- galena ore, useless fucking shit
-    }
+trash = {
+    ["minecraft:stone"] = {}, 
+    ["minecraft:dirt"] = {},
+    ["minecraft:grass_block"] = {}
 }
 
-function isOre(success, data, error)
+function isTrash(success, data, error)
     if success then
-        local table = ores[data.name]
+        local table = trash[data.name]
         return table and not table[data.metadata]
     end
     if error then
         print(error)
     end
-    return false
+    return true
 end
 
 function breakOre()
@@ -31,5 +22,5 @@ function breakOre()
 end
 
 function inspectOre()
-    return isOre(turtle.inspect())
+    return isTrash(turtle.inspect())
 end
