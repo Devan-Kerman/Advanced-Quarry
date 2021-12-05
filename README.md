@@ -11,3 +11,8 @@ command                            | description
 `quarry/quarry.lua 5 6`            | digs out a 5x6 area
 
 place a chest behind the turtle, some starter fuel inside the turtle, and the turtle will mine out the specified area **front to back, left to right**
+
+
+Some other cool stuff:
+https://pastebin.com/QFCfPfuL
+https://pastebin.com/ArahXbUD
