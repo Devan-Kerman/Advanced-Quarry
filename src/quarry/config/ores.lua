@@ -4,7 +4,8 @@ trash = {
     ["minecraft:grass_block"] = {},
     ["minecraft:netherrak"] = {},
     ["minecraft:gravel"] = {},
-    ["minecraft:basalt"] = {}
+    ["minecraft:basalt"] = {},
+    ["minecraft:blackstone"] = {}
 }
 
 function isTrash(success, data, error)
