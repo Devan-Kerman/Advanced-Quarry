@@ -14,5 +14,5 @@ place a chest behind the turtle, some starter fuel inside the turtle, and the tu
 
 
 Some other cool stuff:
-https://pastebin.com/QFCfPfuL
-https://pastebin.com/ArahXbUD
+https://pastebin.com/GYHj3cvE
+https://pastebin.com/4cTzvPMt
