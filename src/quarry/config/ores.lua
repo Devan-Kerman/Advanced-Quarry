@@ -22,5 +22,5 @@ function breakOre()
 end
 
 function inspectOre()
-    return isTrash(turtle.inspect())
+    return not isTrash(turtle.inspect())
 end
