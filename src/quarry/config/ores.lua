@@ -1,7 +1,8 @@
 trash = {
     ["minecraft:stone"] = {}, 
     ["minecraft:dirt"] = {},
-    ["minecraft:grass_block"] = {}
+    ["minecraft:grass_block"] = {},
+    ["minecraft:netherrak"]
 }
 
 function isTrash(success, data, error)
