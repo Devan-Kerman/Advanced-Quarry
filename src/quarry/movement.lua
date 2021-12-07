@@ -1,6 +1,6 @@
 os.loadAPI("quarry/inventory.lua")
 
-
+local diveX = 0, diveZ = 0
 local x, y, z, r = 0, 0, 0, 0
 function loc() 
     return x, y, z
@@ -8,13 +8,15 @@ end
 
 function saveState()
     local file = fs.open("quarry/movement_state", "w")
-    file.write(textutils.serialize(table.pack(x, y, z, r)))
+    file.write(textutils.serialize(table.pack(x, y, z, r, diveX, diveZ)))
     file.close()
 end
 
 function loadState()
-    local file = fs.open("quarry/movement_state", "r")
-    x, y, z, r = table.unpack(textutils.unserialize(file.readAll()))
+    if fs.exists("quarry/movement_state") then
+        local file = fs.open("quarry/movement_state", "r")
+        x, y, z, r, diveX, diveZ = table.unpack(textutils.unserialize(file.readAll()))
+    end
 end
 
 function tryUp()
