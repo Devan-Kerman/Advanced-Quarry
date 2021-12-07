@@ -61,13 +61,12 @@ function nextDive(x, z, width, length)
 end
 
 function quarry(width, length)
-    local x, z = 0, 0
+    local x, z = movement.diveX, movement.diveY
+    print("[" .. x .. ", " .. z .. "]")
     while x and movement.hasFuel(x * 2, 0, z * 2) do
-        print(x, z)
         movement.navigate(x, 0, z)
         if dive() then
             x, z = nextDive(x, z, width, length)
-            print(x, z)
         else
             return false
         end
@@ -89,4 +88,5 @@ if not length then
     length = width
 end
 
+movement.loadState()
 quarry(tonumber(width), tonumber(length))
