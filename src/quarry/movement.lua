@@ -1,6 +1,6 @@
 os.loadAPI("quarry/inventory.lua")
 
-local diveX, diveZ = 0, 0
+diveX, diveZ = 0, 0
 local x, y, z, r = 0, 0, 0, 0
 function loc() 
     return x, y, z
