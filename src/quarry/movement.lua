@@ -1,8 +1,20 @@
 os.loadAPI("quarry/inventory.lua")
 
+
 local x, y, z, r = 0, 0, 0, 0
 function loc() 
     return x, y, z
+end
+
+function saveState()
+    local file = fs.open("quarry/movement_state", "w")
+    file.write(textutils.serialize(table.pack(x, y, z, r)))
+    file.close()
+end
+
+function loadState()
+    local file = fs.open("quarry/movement_state", "r")
+    x, y, z, r = table.unpack(textutils.unserialize(file.readAll()))
 end
 
 function tryUp()
@@ -21,6 +33,7 @@ function tryUp()
         end
     end
     y = y + 1
+    saveState()
     return true
 end
 
@@ -35,6 +48,7 @@ function tryDown()
         end
     end
     y = y - 1
+    saveState()
     return true
 end
 
@@ -58,6 +72,7 @@ function try()
     elseif r == 3 then
         z = z - 1
     end
+    saveState()
     return true
 end
 
@@ -78,6 +93,7 @@ function face(dir)
         end
     end
     r = dir
+    saveState()
 end
 
 -- checks if the turtle has enough fuel to return to a location
