@@ -61,7 +61,7 @@ function nextDive(x, z, width, length)
 end
 
 function quarry(width, length)
-    local x, z = movement.diveX, movement.diveY
+    local x, z = movement.diveX, movement.diveZ
     print("[" .. x .. ", " .. z .. "]")
     while x and movement.hasFuel(x * 2, 0, z * 2) do
         movement.navigate(x, 0, z)
