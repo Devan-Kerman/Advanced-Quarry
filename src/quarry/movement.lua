@@ -16,6 +16,7 @@ function loadState()
     if fs.exists("quarry/movement_state") then
         local file = fs.open("quarry/movement_state", "r")
         x, y, z, r, diveX, diveZ = table.unpack(textutils.unserialize(file.readAll()))
+        print("Loaded State: " .. x .. " " .. y .. " " .. z .. " " .. r .. " " .. diveX .. " " .. diveY)
     end
 end
 
